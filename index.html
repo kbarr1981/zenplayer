@@ -180,28 +180,26 @@ for(var i=0;i<flt.length-1;i++)flt[i].connect(flt[i+1]);
 flt[flt.length-1].connect(an);an.connect(gn);gn.connect(actx.destination);
 }
 
-var ringHist=null,ringPhase=0;
+var eqHist=null;
 function draw(){
 if(!can||!an){requestAnimationFrame(draw);return}
 var c=can.getContext('2d'),dp=devicePixelRatio||1,r=can.getBoundingClientRect();
 if(can.width!==r.width*dp){can.width=r.width*dp;can.height=r.height*dp;c.scale(dp,dp)}
 var W=r.width,H=r.height;c.clearRect(0,0,W,H);
 var bl=an.frequencyBinCount,d=new Uint8Array(bl);an.getByteFrequencyData(d);
-var cx=W/2,cy=H/2,baseR=Math.min(W,H)*0.32;
-var N=120;
-if(!ringHist||ringHist.length!==N){ringHist=new Array(N);for(var k=0;k<N;k++)ringHist[k]=0}
-ringPhase+=0.012;
-var disp=new Array(N);
-for(var i=0;i<N;i++){var fi=Math.floor(Math.pow(i/N,1.2)*bl*0.5),v=d[fi]/255;ringHist[i]=ringHist[i]*0.74+v*0.26;disp[i]=ringHist[i]}
-c.shadowColor='rgba(0,224,170,.55)';c.shadowBlur=10;c.lineCap='round';c.lineJoin='round';
-var layers=[{r:-12,a:.05,w:.5,m:22},{r:-6,a:.10,w:.7,m:28},{r:0,a:.26,w:1.1,m:34},{r:6,a:.18,w:.85,m:28},{r:14,a:.09,w:.6,m:22},{r:22,a:.04,w:.4,m:16}];
-for(var l=0;l<layers.length;l++){var ly=layers[l];c.beginPath();
-for(var i=0;i<=N;i++){var idx=i%N,ang=(idx/N)*Math.PI*2-Math.PI/2,v=disp[idx];
-var rad=baseR+ly.r+v*ly.m+Math.sin(ang*5+ringPhase*1.5)*1.6;
-var x=cx+Math.cos(ang)*rad,y=cy+Math.sin(ang)*rad;
-if(i===0)c.moveTo(x,y);else c.lineTo(x,y)}
-c.closePath();c.strokeStyle='rgba(20,224,170,'+ly.a+')';c.lineWidth=ly.w;c.stroke()}
-c.shadowBlur=0;
+var ds=5,dr=1.6,nb=Math.max(40,Math.floor(W/5.5));
+if(!eqHist||eqHist.length!==nb){eqHist=new Array(nb);for(var k=0;k<nb;k++)eqHist[k]=0}
+var step=bl/nb,maxN=Math.floor(H/ds);
+for(var i=0;i<nb;i++){
+var v=d[Math.floor(i*step)]/255;eqHist[i]=eqHist[i]*0.72+v*0.28;
+var bh=eqHist[i]*H*0.95,x=(i+0.5)*(W/nb),nDots=Math.floor(bh/ds);
+for(var j=0;j<nDots;j++){
+var y=H-(j+0.5)*ds,t=j/Math.max(1,maxN-1);
+var rC=Math.round(8+t*37),gC=Math.round(70+t*142),bC=Math.round(30+t*161);
+var al=0.55+t*0.35;
+c.fillStyle='rgba('+rC+','+gC+','+bC+','+al+')';
+c.beginPath();c.arc(x,y,dr,0,Math.PI*2);c.fill();
+}}
 requestAnimationFrame(draw);
 }
 
