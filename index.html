@@ -192,9 +192,9 @@ var N=120;
 if(!ringHist||ringHist.length!==N){ringHist=new Array(N);for(var k=0;k<N;k++)ringHist[k]=0}
 ringPhase+=0.012;
 var disp=new Array(N);
-for(var i=0;i<N;i++){var fi=Math.floor(Math.pow(i/N,1.2)*bl*0.5),v=d[fi]/255;ringHist[i]=ringHist[i]*0.84+v*0.16;disp[i]=ringHist[i]}
+for(var i=0;i<N;i++){var fi=Math.floor(Math.pow(i/N,1.2)*bl*0.5),v=d[fi]/255;ringHist[i]=ringHist[i]*0.74+v*0.26;disp[i]=ringHist[i]}
 c.shadowColor='rgba(0,224,170,.55)';c.shadowBlur=10;c.lineCap='round';c.lineJoin='round';
-var layers=[{r:-12,a:.05,w:.5,m:14},{r:-6,a:.10,w:.7,m:18},{r:0,a:.26,w:1.1,m:22},{r:6,a:.18,w:.85,m:18},{r:14,a:.09,w:.6,m:14},{r:22,a:.04,w:.4,m:10}];
+var layers=[{r:-12,a:.05,w:.5,m:22},{r:-6,a:.10,w:.7,m:28},{r:0,a:.26,w:1.1,m:34},{r:6,a:.18,w:.85,m:28},{r:14,a:.09,w:.6,m:22},{r:22,a:.04,w:.4,m:16}];
 for(var l=0;l<layers.length;l++){var ly=layers[l];c.beginPath();
 for(var i=0;i<=N;i++){var idx=i%N,ang=(idx/N)*Math.PI*2-Math.PI/2,v=disp[idx];
 var rad=baseR+ly.r+v*ly.m+Math.sin(ang*5+ringPhase*1.5)*1.6;
