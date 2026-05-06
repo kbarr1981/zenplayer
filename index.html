@@ -29,7 +29,8 @@ header{z-index:20;display:flex;align-items:center;justify-content:space-between;
 .v{display:none;flex:1;flex-direction:column;padding:0 20px 12px;overflow:hidden}
 .v.on{display:flex}
 canvas{position:absolute;inset:0;width:100%;height:100%}
-.vw{position:relative;flex:1;max-height:28vh;width:100%;display:flex;align-items:center;justify-content:center}
+.vw{position:relative;flex:0 0 130px;width:100%;margin-bottom:18px}
+.np{text-align:center;display:flex;flex-direction:column;align-items:center}
 .np{position:relative;z-index:2;text-align:center;pointer-events:none}
 .prog{width:100%;max-width:28rem;margin:12px auto 0;flex-shrink:0}
 .ptr{position:relative;height:6px;border-radius:99px;background:rgba(232,217,196,.14);overflow:hidden;cursor:pointer}
@@ -119,12 +120,12 @@ navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 
 <div class="v on" id="v0">
 <div style="flex:.45"></div>
-<div class="vw"><canvas id="cv"></canvas>
+<div class="vw"><canvas id="cv"></canvas></div>
 <div class="np">
 <div style="font-size:14px;letter-spacing:.4em;color:#b5a898;margin-bottom:12px">NOW PLAYING</div>
 <div id="nt" style="font-size:26px;color:#fff;padding:0 32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80vw">silence</div>
 <div id="ns" style="font-size:14px;letter-spacing:.3em;color:#9a8e80;margin-top:12px">NO TRACKS LOADED</div>
-</div></div>
+</div>
 <div class="prog"><div style="display:flex;justify-content:space-between;font-size:12px;color:#b5a898;margin-bottom:8px" class="mono"><span id="tc">0:00</span><span id="td">0:00</span></div>
 <div class="ptr"><div class="pf" id="pf"></div><input type="range" min="0" max="100" value="0" id="sb"></div></div>
 <div class="ctrls">
@@ -179,29 +180,33 @@ for(var i=0;i<flt.length-1;i++)flt[i].connect(flt[i+1]);
 flt[flt.length-1].connect(an);an.connect(gn);gn.connect(actx.destination);
 }
 
+var smPts=null;
 function draw(){
 if(!can||!an){requestAnimationFrame(draw);return}
 var c=can.getContext('2d'),dp=devicePixelRatio||1,r=can.getBoundingClientRect();
 if(can.width!==r.width*dp){can.width=r.width*dp;can.height=r.height*dp;c.scale(dp,dp)}
 var W=r.width,H=r.height,bl=an.frequencyBinCount,d=new Uint8Array(bl);
 an.getByteFrequencyData(d);
-c.fillStyle='rgba(0,0,0,.18)';c.fillRect(0,0,W,H);
-var cx=W/2,cy=H/2,br=Math.min(W,H)*.18,sm=0;
-for(var i=0;i<bl;i++)sm+=d[i];var p=sm/bl/255,ir=br+p*18;
-var g=c.createRadialGradient(cx,cy,ir*.3,cx,cy,ir*1.4);
-g.addColorStop(0,'rgba(212,165,116,'+(0.15+p*.25)+')');
-g.addColorStop(.6,'rgba(176,122,81,'+(0.08+p*.15)+')');
-g.addColorStop(1,'rgba(0,0,0,0)');
-c.fillStyle=g;c.beginPath();c.arc(cx,cy,ir*1.4,0,Math.PI*2);c.fill();
-c.strokeStyle='rgba(212,165,116,'+(0.4+p*.4)+')';c.lineWidth=1;c.beginPath();c.arc(cx,cy,ir,0,Math.PI*2);c.stroke();
-var nb=96,st=Math.floor(bl/nb);
-for(i=0;i<nb;i++){var v=d[i*st]/255,a=(i/nb)*Math.PI*2-Math.PI/2,blen=v*Math.min(W,H)*.28,r1=ir+6,r2=r1+blen;
-var x1=cx+Math.cos(a)*r1,y1=cy+Math.sin(a)*r1,x2=cx+Math.cos(a)*r2,y2=cy+Math.sin(a)*r2;
-var lg=c.createLinearGradient(x1,y1,x2,y2);
-lg.addColorStop(0,'rgba(212,165,116,'+(0.5+v*.5)+')');lg.addColorStop(1,'rgba(176,80,60,'+v*.6+')');
-c.strokeStyle=lg;c.lineWidth=2;c.lineCap='round';c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke()}
-for(i=0;i<nb;i+=4){v=d[i*st]/255;if(v<.3)continue;a=(i/nb)*Math.PI*2-Math.PI/2;var rr=ir+v*Math.min(W,H)*.32;
-c.fillStyle='rgba(232,200,160,'+v*.8+')';c.beginPath();c.arc(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr,1.5,0,Math.PI*2);c.fill()}
+c.clearRect(0,0,W,H);
+var N=72;if(!smPts||smPts.length!==N){smPts=new Array(N);for(var k=0;k<N;k++)smPts[k]=0}
+var pts=[];for(var i=0;i<N;i++){
+var idx=Math.floor(Math.pow(i/N,1.4)*bl*.7),v=d[idx]/255;
+smPts[i]=smPts[i]*.72+v*.28;
+pts.push({x:(i/(N-1))*W,y:H-smPts[i]*H*.95-2});
+}
+c.beginPath();c.moveTo(0,H+2);c.lineTo(pts[0].x,pts[0].y);
+for(i=1;i<pts.length;i++){var p=pts[i],pr=pts[i-1],mx=(pr.x+p.x)/2,my=(pr.y+p.y)/2;c.quadraticCurveTo(pr.x,pr.y,mx,my)}
+c.lineTo(pts[N-1].x,pts[N-1].y);c.lineTo(W,H+2);c.closePath();
+var g=c.createLinearGradient(0,0,0,H);
+g.addColorStop(0,'rgba(94,234,212,.85)');
+g.addColorStop(.5,'rgba(45,212,191,.55)');
+g.addColorStop(1,'rgba(15,118,110,.15)');
+c.fillStyle=g;c.fill();
+c.beginPath();c.moveTo(pts[0].x,pts[0].y);
+for(i=1;i<pts.length;i++){var p=pts[i],pr=pts[i-1],mx=(pr.x+p.x)/2,my=(pr.y+p.y)/2;c.quadraticCurveTo(pr.x,pr.y,mx,my)}
+c.lineTo(pts[N-1].x,pts[N-1].y);
+c.strokeStyle='rgba(153,246,228,.9)';c.lineWidth=1.5;c.lineCap='round';c.lineJoin='round';
+c.shadowColor='rgba(45,212,191,.6)';c.shadowBlur=8;c.stroke();c.shadowBlur=0;
 requestAnimationFrame(draw);
 }
 
