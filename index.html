@@ -140,7 +140,7 @@ navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 </div>
 
 <div class="v" id="v1">
-<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div></div><button class="abtn" id="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</button></div>
+<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div><div id="pdur" style="font-size:11px;color:#9a8e80;letter-spacing:.18em;margin-top:4px;font-variant-numeric:tabular-nums">0:00</div></div><button class="abtn" id="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</button></div>
 <div id="tl"></div>
 </div>
 
@@ -255,6 +255,7 @@ if(suppressClick){e.stopPropagation();return}
 var dl=e.target.closest('.dl');
 if(dl){e.stopPropagation();var id=dl.dataset.id,idx=T.findIndex(function(t){return t.id===id});if(idx<0)return;URL.revokeObjectURL(T[idx].url);T.splice(idx,1);if(idx===ci){au.pause();pl=false;ci=0;if(T.length)ld()}else if(idx<ci)ci--;rpl();upd();return}
 var it=e.target.closest('.ti');if(it&&!e.target.closest('.dh')){ci=parseInt(it.dataset.i);pl=true;ld();sw(0)}};
+updTotal();
 }
 
 var eqBuilt=false;
@@ -298,10 +299,13 @@ if(vl)vl.textContent=(v>0?'+':'')+v;
 });
 }
 
+function fmtDur(s){if(!s||!isFinite(s))return '0:00';var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return (h>0?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')}
+function loadDur(t){if(t.duration!==undefined)return;var a=new Audio();a.preload='metadata';a.addEventListener('loadedmetadata',function(){t.duration=a.duration||0;updTotal()});a.addEventListener('error',function(){t.duration=0;updTotal()});a.src=t.url}
+function updTotal(){var tot=T.reduce(function(s,t){return s+(t.duration||0)},0);var el=document.getElementById('pdur');if(el)el.textContent=fmtDur(tot)}
 fi.onchange=function(e){
 var files=Array.from(e.target.files||[]).filter(function(f){return f.type.startsWith('audio/')});
 var was=!T.length;
-files.forEach(function(f){T.push({id:f.name+'-'+f.size+'-'+Date.now()+'-'+Math.random(),name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)})});
+files.forEach(function(f){var t={id:f.name+'-'+f.size+'-'+Date.now()+'-'+Math.random(),name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)};T.push(t);loadDur(t)});
 e.target.value='';if(was&&T.length)ld();if(cv===1)rpl();upd();
 };
 document.getElementById('ab').onclick=function(){fi.click()};
