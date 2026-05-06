@@ -15,13 +15,14 @@
 html,body{height:100%;width:100%;overflow:hidden}
 body{font-family:"Cormorant Garamond",Georgia,serif;background:#000;color:#f5ede0;font-weight:300;user-select:none;-webkit-user-select:none}
 .app{width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-header{z-index:20;display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px;flex-shrink:0}
-.logo{display:flex;align-items:center;gap:8px;height:36px;line-height:1}
+header{z-index:20;display:flex;align-items:flex-start;justify-content:space-between;padding:16px 20px 8px;flex-shrink:0}
+.logo{display:flex;flex-direction:column;align-items:flex-start;gap:6px;line-height:1}
+.logo-top{display:flex;align-items:center;gap:8px;height:36px}
 .hav-wrap{padding:6px 20px 10px;flex-shrink:0;display:flex}
 .hav{width:51px;height:51px;border-radius:50%;object-fit:cover;border:1px solid rgba(212,165,116,.35);box-shadow:0 0 10px rgba(212,165,116,.2);flex-shrink:0;transition:margin-left .15s}
 .kanji{font-family:"Noto Serif JP",serif;color:#b07a51;font-size:26px}
 .zt{letter-spacing:.4em;font-size:28px;color:#ff4a3f;text-shadow:0 0 10px rgba(255,74,63,1),0 0 20px rgba(255,74,63,.7),0 0 35px rgba(255,74,63,.5)}
-.pt{letter-spacing:.4em;font-size:14px;color:#b5a898;margin-left:8px}
+.pt{letter-spacing:.4em;font-size:14px;color:#b5a898;transition:margin-left .15s}
 .nav{display:flex;gap:4px}
 .nb{width:36px;height:36px;border-radius:50%;background:0 0;border:1px solid rgba(232,217,196,.15);color:#b5a898;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .nb.on{background:rgba(212,165,116,.15);border-color:rgba(212,165,116,.4);color:#e0b584}
@@ -107,7 +108,7 @@ navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 <body>
 <div class="app">
 <header>
-<div class="logo"><span class="kanji">禅</span><span class="zt">ZEN</span><span class="pt">PLAYER</span></div>
+<div class="logo"><div class="logo-top"><span class="kanji">禅</span><span class="zt">ZEN</span></div><span class="pt">PLAYER</span></div>
 <nav class="nav">
 <button class="nb on" id="n0" onclick="sw(0)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>
 <button class="nb" id="n1" onclick="sw(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
@@ -313,8 +314,10 @@ au.onloadedmetadata=upd;
 au.onended=doNext;
 upd();
 requestAnimationFrame(draw);
+function alignPt(){var zt=document.querySelector('.zt'),pt=document.querySelector('.pt'),logo=document.querySelector('.logo');if(!zt||!pt||!logo)return;var ztR=zt.getBoundingClientRect(),lR=logo.getBoundingClientRect();pt.style.marginLeft=Math.max(0,ztR.left-lR.left)+'px'}
 function alignHav(){var pt=document.querySelector('.pt'),hav=document.querySelector('.hav'),wrap=document.querySelector('.hav-wrap');if(!pt||!hav||!wrap)return;var ptR=pt.getBoundingClientRect(),wR=wrap.getBoundingClientRect(),pl=parseFloat(getComputedStyle(wrap).paddingLeft)||0;hav.style.marginLeft=Math.max(0,(ptR.left+ptR.width/2)-(wR.left+pl)-hav.offsetWidth/2)+'px'}
-window.addEventListener('load',alignHav);window.addEventListener('resize',alignHav);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignHav);setTimeout(alignHav,200);setTimeout(alignHav,800);
+function alignAll(){alignPt();alignHav()}
+window.addEventListener('load',alignAll);window.addEventListener('resize',alignAll);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignAll);setTimeout(alignAll,200);setTimeout(alignAll,800);
 </script>
 </body>
 </html>
