@@ -53,6 +53,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%}
 .gk{font-family:"Noto Serif JP",serif;color:#b07a51;font-size:28px;margin-top:6px;letter-spacing:.15em;opacity:.85}
 .vh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:0}
 #v1,#v2{padding-top:32px}
+#v0{position:relative}
+.cred{position:absolute;left:20px;bottom:6px;font-size:9px;letter-spacing:.2em;color:#5a5045;opacity:.65;pointer-events:none;font-family:"Inter",system-ui,sans-serif}
 .vti{font-size:24px;color:#f5ede0;margin-top:34px}
 .vti small{font-size:13px;color:#b5a898}
 .abtn{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:99px;background:rgba(212,165,116,.1);border:1px solid rgba(212,165,116,.3);color:#e0b584;font-size:11px;letter-spacing:.2em;cursor:pointer;font-family:inherit}
@@ -136,6 +138,7 @@ navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
 <button class="cb" onclick="seek(10)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg></button>
 <button class="cb" onclick="doNext()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
 </div>
+<div class="cred">app design — KB</div>
 <div class="vr"><span style="font-size:10px;letter-spacing:.2em;color:#9a8e80">VOL</span><div class="vt"><div class="vbg"></div><div class="vfl" id="vf"></div><input type="range" min="0" max="1" step=".01" value=".8" id="vb"></div><span id="vn" class="mono" style="font-size:10px;width:24px;text-align:right;color:#b5a898">80</span></div>
 </div>
 
