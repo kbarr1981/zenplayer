@@ -18,7 +18,7 @@ body{font-family:"Cormorant Garamond",Georgia,serif;background:#000;color:#f5ede
 header{z-index:20;display:flex;align-items:flex-start;justify-content:space-between;padding:16px 20px 8px;flex-shrink:0}
 .logo{display:flex;flex-direction:column;align-items:flex-start;gap:0;line-height:1}
 .logo-top{display:flex;align-items:center;gap:8px;height:36px}
-.hav-wrap{padding:6px 20px 10px;flex-shrink:0;display:flex}
+.hav-wrap{padding:6px 20px 10px;flex-shrink:0;display:flex;justify-content:center}
 .hav{width:51px;height:51px;border-radius:50%;object-fit:cover;border:1px solid rgba(212,165,116,.35);box-shadow:0 0 10px rgba(212,165,116,.2);flex-shrink:0;transition:margin-left .15s}
 .kanji{font-family:"Noto Serif JP",serif;color:#b07a51;font-size:26px}
 .zt{letter-spacing:.4em;font-size:28px;color:#ff4a3f;text-shadow:0 0 10px rgba(255,74,63,1),0 0 20px rgba(255,74,63,.7),0 0 35px rgba(255,74,63,.5)}
@@ -315,8 +315,7 @@ au.onended=doNext;
 upd();
 requestAnimationFrame(draw);
 function alignPt(){var zt=document.querySelector('.zt'),pt=document.querySelector('.pt'),logo=document.querySelector('.logo');if(!zt||!pt||!logo)return;var ztR=zt.getBoundingClientRect(),lR=logo.getBoundingClientRect();pt.style.marginLeft=Math.max(0,ztR.left-lR.left)+'px'}
-function alignHav(){var pt=document.querySelector('.pt'),hav=document.querySelector('.hav'),wrap=document.querySelector('.hav-wrap');if(!pt||!hav||!wrap)return;var ptR=pt.getBoundingClientRect(),wR=wrap.getBoundingClientRect(),pl=parseFloat(getComputedStyle(wrap).paddingLeft)||0;hav.style.marginLeft=Math.max(0,(ptR.left+ptR.width/2)-(wR.left+pl)-hav.offsetWidth/2)+'px'}
-function alignAll(){alignPt();alignHav()}
+function alignAll(){alignPt()}
 window.addEventListener('load',alignAll);window.addEventListener('resize',alignAll);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignAll);setTimeout(alignAll,200);setTimeout(alignAll,800);
 </script>
 </body>
