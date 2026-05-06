@@ -59,8 +59,8 @@ fg.paste(icon, (W - 300 - 70, (H - 300) // 2), icon)
 jp = jp_font(72)
 if jp:
     d.text((70, 110), "禅", fill=BROWN, font=jp)
-d.text((130, 130), "ZEN PLAYER", fill=CREAM, font=font(44, bold=True))
-d.text((130, 200), "Quiet music player.", fill=CREAM, font=font(38, bold=True))
+d.text((130, 130), "ZEN MP3 PLAYER", fill=CREAM, font=font(44, bold=True))
+d.text((130, 200), "Quiet MP3 player.", fill=CREAM, font=font(38, bold=True))
 d.text((130, 250), "8-band EQ.", fill=CREAM, font=font(38, bold=True))
 d.text((130, 340), "Bring your own files.", fill=DIM, font=font(26))
 

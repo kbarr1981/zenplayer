@@ -2,3 +2,11 @@
 *.bak2
 _*.b64
 qr.png
+
+# Build artifacts and signing keys — never commit these
+packages/
+*.keystore
+signing-key-info.txt
+/*.zip
+/the_toffman_*.webp
+/fingerprint*.txt

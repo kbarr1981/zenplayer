@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "ZEN PLAYER",
-  "short_name": "ZEN",
-  "description": "Music player with visualizer and EQ",
+  "name": "Zen MP3 Player",
+  "short_name": "Zen MP3",
+  "description": "Quiet MP3 player with 8-band EQ and live visualizer",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
