@@ -11,7 +11,7 @@ field has its final value or file path noted.
 ## 0. Pre-submission
 
 - Active keystore is at `C:\Users\krist\Documents\_keystores\zenplayer\signing.keystore` (password `p1GvAcmuuBRu`, alias `my-key-alias`). Off-machine backup before first upload is highly recommended.
-- Privacy policy needs to be live at a public URL **before** submission. See §10 below — currently a TODO.
+- Privacy policy is live at https://kbarr1981.github.io/zenplayer/privacy/ — paste that URL into Play Console's **App content → Privacy policy** field. See §10.
 - Test the APK on your phone first: `I:\zenplayer\packages\android\Zen MP3.apk`. Confirm it launches fullscreen (no URL bar) and audio playback works.
 
 ---
@@ -246,69 +246,16 @@ This means Google holds your **upload certificate** + an internal **app signing 
 
 ---
 
-## 10. ⚠ Privacy policy — TODO before submission
+## 10. Privacy policy
 
-Play Console **requires** a publicly hosted privacy policy URL even when
-your app collects nothing. Currently `https://kbarr1981.github.io/zenplayer/privacy`
-is referenced in the Apple listing but not yet hosted.
+**Live URL:** https://kbarr1981.github.io/zenplayer/privacy/
 
-**Quickest path:** add a `privacy.html` to the project root. Suggested
-contents:
+📋 Paste that into Play Console's **App content → Privacy policy** field.
 
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Privacy Policy — Zen MP3 Player</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:680px;margin:40px auto;padding:0 20px;line-height:1.55;color:#222;background:#fff}
-    h1{font-weight:300;letter-spacing:.05em}
-    h2{margin-top:1.6em;font-weight:500}
-  </style>
-</head>
-<body>
-  <h1>Privacy Policy — Zen MP3 Player</h1>
-  <p>Last updated: 2026-05-06</p>
-  <p>Zen MP3 Player ("the app") is a music player that runs entirely on your device.
-  This page explains what the app does and does not do with your data.</p>
-
-  <h2>What we collect</h2>
-  <p>Nothing. The app does not collect, store, or transmit any personal information,
-  usage analytics, device identifiers, or audio file metadata to any server.</p>
-
-  <h2>What the app accesses on your device</h2>
-  <ul>
-    <li><strong>Audio files you choose</strong>: when you select audio files for playback,
-    the app reads them locally to play them back. They are never uploaded.</li>
-  </ul>
-
-  <h2>Third parties</h2>
-  <p>None. The app contains no analytics SDKs, no advertising libraries, and no
-  third-party tracking of any kind.</p>
-
-  <h2>Network</h2>
-  <p>The app makes no network requests during playback. The only network activity is
-  the initial download of the page bundle when you first install the app.</p>
-
-  <h2>Children</h2>
-  <p>The app is rated for general audiences. It collects no personal information
-  from anyone, including children under 13.</p>
-
-  <h2>Changes</h2>
-  <p>If this policy ever changes, the updated date at the top of this page will
-  reflect the change. Material changes will be announced in the app's release notes.</p>
-
-  <h2>Contact</h2>
-  <p>littlewhitestudio.uk@gmail.com</p>
-</body>
-</html>
-```
-
-Save as `privacy.html` at the project root, then create a `privacy/` redirect
-or rename to `privacy/index.html` so the URL `…/zenplayer/privacy` resolves.
-Once `https://kbarr1981.github.io/zenplayer/privacy` returns 200, paste that
-URL into Play Console's **App content → Privacy policy** field.
+The page is served from `privacy/index.html` in the repo and deploys via
+GitHub Pages on every push to `main`. Same URL is referenced from the
+Apple App Store listing — keep it stable. If you ever need to revise the
+policy, edit `privacy/index.html` and bump the "Last updated" date.
 
 ---
 
@@ -318,7 +265,7 @@ The dashboard will block "Send for review" until every required card is
 green. Suggested order:
 
 1. Create app (§1)
-2. Privacy policy (§10) — host it first, then paste URL
+2. Privacy policy URL (§10) — paste live URL into App content
 3. App access (§2a)
 4. Ads (§2b)
 5. Content rating questionnaire (§2c)
