@@ -1,4 +1,4 @@
-const CACHE = "zen-player-v4";
+const CACHE = "zen-player-v5";
 const ASSETS = [
   "./",
   "./index.html",
