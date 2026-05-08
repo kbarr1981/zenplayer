@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
 <link rel="apple-touch-icon" sizes="1024x1024" href="icons/icon-1024.png">
 <title>Zen MP3 Player</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+JP:wght@300;500&family=JetBrains+Mono:wght@300;400&family=Inter:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Serif+JP:wght@300;500&family=JetBrains+Mono:wght@300;400&family=Inter:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;500&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden}
@@ -24,7 +24,8 @@ header{z-index:20;display:flex;align-items:center;justify-content:space-between;
 .hav{width:68px;height:68px;border-radius:50%;object-fit:cover;border:1px solid rgba(212,165,116,.35);box-shadow:0 0 11px rgba(212,165,116,.2);flex-shrink:0}
 .kanji{font-family:"Noto Serif JP",serif;color:#b07a51;font-size:28px}
 .zt{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;letter-spacing:.4em;font-size:30px;color:#ff4a3f;text-shadow:0 0 11px rgba(255,74,63,1),0 0 22px rgba(255,74,63,.7),0 0 38px rgba(255,74,63,.5)}
-.pt{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;letter-spacing:.4em;font-size:15px;color:#b5a898;margin-top:-4px;transition:margin-left .15s}
+.pt{font-family:"Cormorant Garamond",Georgia,serif;font-weight:300;letter-spacing:.4em;font-size:15px;color:#b5a898;margin-top:-4px;transition:margin-left .15s;font-feature-settings:"lnum" 1;font-variant-numeric:lining-nums}
+.qq{font-family:"Tangerine",cursive;font-weight:400;font-size:24px;line-height:1.2;color:#d4a574;text-align:center;padding:10px 24px 4px;max-width:520px;margin:0 auto;opacity:.9;letter-spacing:.01em;flex-shrink:0}
 .nav{display:flex;gap:4px}
 .nb{width:39px;height:39px;border-radius:50%;background:0 0;border:1px solid rgba(232,217,196,.15);color:#b5a898;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .nb.on{background:rgba(212,165,116,.15);border-color:rgba(212,165,116,.4);color:#e0b584}
@@ -123,7 +124,8 @@ if ("serviceWorker" in navigator) {
 </header>
 
 <div class="v on" id="v0">
-<div style="flex:.45"></div>
+<div id="qq" class="qq"></div>
+<div style="flex:.4"></div>
 <div class="vw"><canvas id="cv"></canvas></div>
 <div class="np">
 <div style="font-family:'Inter',system-ui,-apple-system,sans-serif;font-weight:500;font-size:14px;letter-spacing:.4em;color:#b5a898;margin-bottom:12px">NOW PLAYING</div>
@@ -163,7 +165,95 @@ if ("serviceWorker" in navigator) {
 <input type="file" id="fd" accept="audio/*" multiple webkitdirectory directory>
 
 <script>
-var F=[60,170,310,600,1e3,3e3,6e3,12e3],
+var QQ=[
+"The Tao that can be told is not the eternal Tao.",
+"The name that can be named is not the eternal name.",
+"Nameless, it is the origin of heaven and earth.",
+"Named, it is the mother of ten thousand things.",
+"The sage acts without doing, and teaches without speaking.",
+"He who knows others is wise; he who knows himself is enlightened.",
+"He who conquers others is strong; he who conquers himself is mighty.",
+"He who is contented is rich.",
+"He who knows when to stop will not be in danger.",
+"The highest excellence is like water.",
+"Water benefits all things and contends with none.",
+"A journey of a thousand li begins beneath one's feet.",
+"The tree that fills a man's arms grew from a tender shoot.",
+"A tower of nine storeys rose from a heap of earth.",
+"The softest of stuff in the world overrides the hardest.",
+"Yielding is the way of the Tao.",
+"Returning is the movement of the Tao.",
+"He who stands on tiptoe does not stand firm.",
+"He who takes long strides does not walk well.",
+"He who displays himself does not shine.",
+"He who asserts his own views is not distinguished.",
+"He who vaunts himself finds no merit acknowledged.",
+"Knowing the constant is called illumination.",
+"Not knowing the constant, one acts blindly.",
+"He who knows does not speak; he who speaks does not know.",
+"The Tao is empty, yet inexhaustible.",
+"The Tao is hidden and nameless, yet it nourishes all things.",
+"True words are not beautiful; beautiful words are not true.",
+"Good men do not argue; those who argue are not good.",
+"The wise are not learned; the learned are not wise.",
+"The sage does not accumulate.",
+"The more he gives to others, the more he has himself.",
+"Heaven's Tao benefits and does not harm.",
+"The sage's Tao acts but does not contend.",
+"A great vessel takes long to complete.",
+"The greatest sound has the faintest notes.",
+"The greatest form has no shape.",
+"Govern a great state as you would cook a small fish.",
+"There is no greater calamity than discontent.",
+"There is no greater fault than the desire for gain.",
+"Without going outside, you may know the world.",
+"Without looking through the window, you may see the way of heaven.",
+"The further one goes, the less one knows.",
+"To learn, add daily. To follow the Tao, subtract daily.",
+"By subtracting again and again, one arrives at non-action.",
+"Through non-action, nothing is left undone.",
+"At birth, man is soft and yielding; at death, hard and stiff.",
+"The hard and stiff are companions of death.",
+"The soft and yielding are companions of life.",
+"Nothing under heaven is softer than water.",
+"Yet nothing is better at overcoming the hard and strong.",
+"The weak overcomes the strong; the soft overcomes the hard.",
+"To know that you do not know is best.",
+"Not to know, yet to think one knows, is sickness.",
+"Manifest plainness; embrace simplicity.",
+"Reduce selfishness; have few desires.",
+"The skilful traveller leaves no track behind.",
+"The skilful speaker leaves no flaw for blame.",
+"The skilful reckoner uses no tallies.",
+"He who is full of virtue is like a newborn child.",
+"Knowing harmony is called the constant.",
+"Knowing the constant is called wisdom.",
+"Empty your mind of all thoughts.",
+"Let your heart be at peace.",
+"Watch the turmoil of beings, but contemplate their return.",
+"Each separate being returns to the common source.",
+"Returning to the source is serenity.",
+"When gold and jade fill the hall, none can keep them safe.",
+"When the work is done, withdraw — this is the way of heaven.",
+"I have three precious things which I prize and hold fast.",
+"The first is gentleness; the second is frugality; the third is humility.",
+"Being gentle, one can be bold.",
+"Being frugal, one can be generous.",
+"Being humble, one can lead.",
+"The Tao gives birth to all things, and Virtue nourishes them.",
+"Heaven and earth are not partial.",
+"Between heaven and earth, the space is like a bellows: empty, yet inexhaustible.",
+"The more it is used, the more it produces.",
+"Too much speech leads to silence; better to hold to the centre.",
+"He who acts upon the Tao does not gain by force.",
+"After great wars, bad years are sure to follow.",
+"The skilful achieve their aim and stop.",
+"Be content with what you have.",
+"When you realise there is nothing lacking, the whole world belongs to you.",
+"The Tao does nothing, yet leaves nothing undone.",
+"Practise non-action. Work without doing."
+],
+F=[60,170,310,600,1e3,3e3,6e3,12e3],
 P={flat:{60:0,170:0,310:0,600:0,1e3:0,3e3:0,6e3:0,12e3:0},bass:{60:8,170:6,310:3,600:0,1e3:0,3e3:0,6e3:1,12e3:2},vocal:{60:-2,170:-1,310:1,600:4,1e3:5,3e3:4,6e3:2,12e3:0},rock:{60:5,170:3,310:-1,600:-2,1e3:0,3e3:3,6e3:5,12e3:6},jazz:{60:3,170:2,310:1,600:2,1e3:-1,3e3:-1,6e3:1,12e3:3},classical:{60:4,170:3,310:0,600:0,1e3:0,3e3:0,6e3:3,12e3:4}},
 T=[],ci=0,pl=false,vol=.8,cv=0,
 eqV=Object.assign({},P.flat),eqN='flat',
@@ -325,6 +415,8 @@ au.onloadedmetadata=upd;
 au.onended=doNext;
 upd();
 requestAnimationFrame(draw);
+function pickQuote(){var el=document.getElementById('qq');if(!el||!QQ.length)return;el.textContent=QQ[Math.floor(Math.random()*QQ.length)]}
+pickQuote();
 function alignPt(){var zt=document.querySelector('.zt'),pt=document.querySelector('.pt'),logo=document.querySelector('.logo');if(!zt||!pt||!logo)return;var ztR=zt.getBoundingClientRect(),lR=logo.getBoundingClientRect();pt.style.marginLeft=Math.max(0,ztR.left-lR.left)+'px'}
 function alignAll(){alignPt()}
 window.addEventListener('load',alignAll);window.addEventListener('resize',alignAll);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignAll);setTimeout(alignAll,200);setTimeout(alignAll,800);
