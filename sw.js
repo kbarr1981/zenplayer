@@ -1,8 +1,9 @@
-const CACHE = "zen-player-v12";
+const CACHE = "zen-player-v13";
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
+  "./zen-chime.mp4",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-512-maskable.png",

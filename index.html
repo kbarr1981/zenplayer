@@ -161,6 +161,7 @@ if ("serviceWorker" in navigator) {
 </div>
 
 <audio id="au" crossorigin="anonymous"></audio>
+<audio id="chime" src="zen-chime.mp4" preload="auto"></audio>
 <input type="file" id="fi" accept="audio/*" multiple>
 <input type="file" id="fd" accept="audio/*" multiple webkitdirectory directory>
 
@@ -417,6 +418,8 @@ upd();
 requestAnimationFrame(draw);
 function pickQuote(){var el=document.getElementById('qq');if(!el||!QQ.length)return;el.textContent=QQ[Math.floor(Math.random()*QQ.length)]}
 pickQuote();
+function playChime(){var c=document.getElementById('chime');if(!c)return;c.volume=.6;var p=c.play();if(p&&p.catch){p.catch(function(){function once(){c.play().catch(function(){});document.removeEventListener('pointerdown',once);document.removeEventListener('keydown',once);document.removeEventListener('touchstart',once)}document.addEventListener('pointerdown',once,{once:true});document.addEventListener('keydown',once,{once:true});document.addEventListener('touchstart',once,{once:true})})}}
+playChime();
 function alignPt(){var zt=document.querySelector('.zt'),pt=document.querySelector('.pt'),logo=document.querySelector('.logo');if(!zt||!pt||!logo)return;var ztR=zt.getBoundingClientRect(),lR=logo.getBoundingClientRect();pt.style.marginLeft=Math.max(0,ztR.left-lR.left)+'px'}
 function alignAll(){alignPt()}
 window.addEventListener('load',alignAll);window.addEventListener('resize',alignAll);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(alignAll);setTimeout(alignAll,200);setTimeout(alignAll,800);
