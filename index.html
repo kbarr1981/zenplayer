@@ -144,7 +144,7 @@ if ("serviceWorker" in navigator) {
 </div>
 
 <div class="v" id="v1">
-<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div><div id="pdur" style="font-size:11px;color:#9a8e80;letter-spacing:.18em;margin-top:4px;font-variant-numeric:tabular-nums">0:00</div></div><button class="abtn" id="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</button></div>
+<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div><div id="pdur" style="font-size:11px;color:#9a8e80;letter-spacing:.18em;margin-top:4px;font-variant-numeric:tabular-nums">0:00</div></div><div style="display:flex;gap:6px"><button class="abtn" id="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</button><button class="abtn" id="ab2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg> FOLDER</button></div></div>
 <div id="tl"></div>
 </div>
 
@@ -160,6 +160,7 @@ if ("serviceWorker" in navigator) {
 
 <audio id="au" crossorigin="anonymous"></audio>
 <input type="file" id="fi" accept="audio/*" multiple>
+<input type="file" id="fd" accept="audio/*" multiple webkitdirectory directory>
 
 <script>
 var F=[60,170,310,600,1e3,3e3,6e3,12e3],
@@ -236,7 +237,7 @@ function seek(d){au.currentTime=Math.max(0,Math.min(au.duration||0,au.currentTim
 function rpl(){
 document.getElementById('pc').innerHTML=T.length+' <small>track'+(T.length!==1?'s':'')+'</small>';
 var tl=document.getElementById('tl');
-if(!T.length){tl.innerHTML='<button class="ed" onclick="fi.click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div style="font-size:12px;letter-spacing:.3em">LOAD TRACKS FROM DEVICE</div><div style="font-size:10px;color:#9a8e80">tap to select audio files</div></button>';return}
+if(!T.length){tl.innerHTML='<button class="ed" onclick="fi.click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div style="font-size:12px;letter-spacing:.3em">LOAD TRACKS FROM DEVICE</div><div style="font-size:10px;color:#9a8e80">tap to select audio files</div><span onclick="event.stopPropagation();fd.click()" style="margin-top:6px;padding-top:12px;border-top:1px solid rgba(212,165,116,.15);width:70%;font-size:10px;letter-spacing:.3em;color:#d4a574">OR LOAD A FOLDER</span></button>';return}
 var h='';T.forEach(function(t,i){
 h+='<div class="ti'+(i===ci?' cur':'')+'" data-i="'+i+'">';
 h+='<div class="dh" data-d="'+i+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="16" x2="20" y2="16"/></svg></div>';
@@ -307,13 +308,16 @@ if(vl)vl.textContent=(v>0?'+':'')+v;
 function fmtDur(s){if(!s||!isFinite(s))return '0:00';var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=Math.floor(s%60);return (h>0?h+':'+String(m).padStart(2,'0'):m)+':'+String(x).padStart(2,'0')}
 function loadDur(t){if(t.duration!==undefined)return;var a=new Audio();a.preload='metadata';a.addEventListener('loadedmetadata',function(){t.duration=a.duration||0;updTotal()});a.addEventListener('error',function(){t.duration=0;updTotal()});a.src=t.url}
 function updTotal(){var tot=T.reduce(function(s,t){return s+(t.duration||0)},0);var el=document.getElementById('pdur');if(el)el.textContent=fmtDur(tot)}
-fi.onchange=function(e){
-var files=Array.from(e.target.files||[]).filter(function(f){return f.type.startsWith('audio/')});
+function addFiles(files){
+var audio=Array.from(files||[]).filter(function(f){return f.type.startsWith('audio/')||/\.(mp3|m4a|aac|flac|ogg|opus|wav|webm)$/i.test(f.name)});
 var was=!T.length;
-files.forEach(function(f){var t={id:f.name+'-'+f.size+'-'+Date.now()+'-'+Math.random(),name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)};T.push(t);loadDur(t)});
-e.target.value='';if(was&&T.length)ld();if(cv===1)rpl();upd();
-};
+audio.forEach(function(f){var t={id:f.name+'-'+f.size+'-'+Date.now()+'-'+Math.random(),name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)};T.push(t);loadDur(t)});
+if(was&&T.length)ld();if(cv===1)rpl();upd();
+}
+fi.onchange=function(e){addFiles(e.target.files);e.target.value=''};
+fd.onchange=function(e){addFiles(e.target.files);e.target.value=''};
 document.getElementById('ab').onclick=function(){fi.click()};
+document.getElementById('ab2').onclick=function(){fd.click()};
 document.getElementById('sb').oninput=function(){au.currentTime=(this.value/100)*(au.duration||0)};
 document.getElementById('vb').oninput=function(){vol=parseFloat(this.value);if(gn)gn.gain.value=vol;document.getElementById('vf').style.width=(vol*100)+'%';document.getElementById('vn').textContent=Math.round(vol*100)};
 au.ontimeupdate=upd;
