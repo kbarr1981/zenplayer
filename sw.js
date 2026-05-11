@@ -1,4 +1,4 @@
-const CACHE = "zen-player-v17";
+const CACHE = "zen-player-v18";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,7 +6,9 @@ const ASSETS = [
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   "./icons/icon-512-maskable.png",
-  "./icons/icon-1024.png"
+  "./icons/icon-1024.png",
+  "./images/avatar.webp",
+  "./images/garden.png"
 ];
 
 self.addEventListener("install", (e) => {
