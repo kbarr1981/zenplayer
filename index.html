@@ -150,7 +150,7 @@ if ("serviceWorker" in navigator) {
 </div>
 
 <div class="v" id="v1">
-<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div><div id="pdur" style="font-size:11px;color:#9a8e80;letter-spacing:.18em;margin-top:4px;font-variant-numeric:tabular-nums">0:00</div></div><div style="display:flex;gap:6px"><button class="abtn" id="ab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</button><button class="abtn" id="ab2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg> FOLDER</button></div></div>
+<div class="vh"><div><div class="lt">COLLECTION</div><div class="vti" id="pc">0 <small>tracks</small></div><div id="pdur" style="font-size:11px;color:#9a8e80;letter-spacing:.18em;margin-top:4px;font-variant-numeric:tabular-nums">0:00</div></div><div style="display:flex;gap:6px"><label class="abtn" for="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ADD</label><button class="abtn" id="ab2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg> FOLDER</button></div></div>
 <div id="tl"></div>
 </div>
 
@@ -418,7 +418,7 @@ fi.onchange=function(e){var fs=e.target.files;e.target.value='';setTimeout(funct
 fd.onchange=function(e){var fs=e.target.files;e.target.value='';setTimeout(function(){addFiles(fs)},0)};
 function pickFi(){setTimeout(function(){fi.click()},0)}
 function pickFd(){setTimeout(function(){fd.click()},0)}
-document.getElementById('ab').onclick=pickFi;
+var abEl=document.getElementById('ab');if(abEl)abEl.onclick=pickFi;
 document.getElementById('ab2').onclick=pickFd;
 document.getElementById('sb').oninput=function(){au.currentTime=(this.value/100)*(au.duration||0)};
 document.getElementById('vb').oninput=function(){vol=parseFloat(this.value);if(gn)gn.gain.value=vol;document.getElementById('vf').style.width=(vol*100)+'%';document.getElementById('vn').textContent=Math.round(vol*100)};
