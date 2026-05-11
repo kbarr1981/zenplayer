@@ -335,7 +335,7 @@ function seek(d){au.currentTime=Math.max(0,Math.min(au.duration||0,au.currentTim
 function rpl(){
 document.getElementById('pc').innerHTML=T.length+' <small>track'+(T.length!==1?'s':'')+'</small>';
 var tl=document.getElementById('tl');
-if(!T.length){tl.innerHTML='<div class="ed-wrap"><button class="ed" onclick="fi.click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div style="font-size:12px;letter-spacing:.3em">LOAD TRACKS FROM DEVICE</div><div style="font-size:10px;color:#9a8e80">tap to select audio files</div></button><button type="button" class="ed-folder" onclick="fd.click()">OR LOAD A FOLDER</button></div>';return}
+if(!T.length){tl.innerHTML='<div class="ed-wrap"><button class="ed" onclick="pickFi()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><div style="font-size:12px;letter-spacing:.3em">LOAD TRACKS FROM DEVICE</div><div style="font-size:10px;color:#9a8e80">tap to select audio files</div></button><button type="button" class="ed-folder" onclick="pickFd()">OR LOAD A FOLDER</button></div>';return}
 var h='';T.forEach(function(t,i){
 h+='<div class="ti'+(i===ci?' cur':'')+'" data-i="'+i+'">';
 h+='<div class="dh" data-d="'+i+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="16" x2="20" y2="16"/></svg></div>';
@@ -416,8 +416,10 @@ if(was&&T.length)ld();if(cv===1)rpl();upd();
 }
 fi.onchange=function(e){addFiles(e.target.files);e.target.value=''};
 fd.onchange=function(e){addFiles(e.target.files);e.target.value=''};
-document.getElementById('ab').onclick=function(){fi.click()};
-document.getElementById('ab2').onclick=function(){fd.click()};
+function pickFi(){setTimeout(function(){fi.click()},0)}
+function pickFd(){setTimeout(function(){fd.click()},0)}
+document.getElementById('ab').onclick=pickFi;
+document.getElementById('ab2').onclick=pickFd;
 document.getElementById('sb').oninput=function(){au.currentTime=(this.value/100)*(au.duration||0)};
 document.getElementById('vb').oninput=function(){vol=parseFloat(this.value);if(gn)gn.gain.value=vol;document.getElementById('vf').style.width=(vol*100)+'%';document.getElementById('vn').textContent=Math.round(vol*100)};
 au.ontimeupdate=upd;
